@@ -19,7 +19,7 @@ if _log_filename is None:
 _config.transient.log_filename = _log_filename
 print("logging to ", _log_filename)
 logging.basicConfig(
-    filename=_log_filename,
+    stream=sys.stdout,
     level=logging.DEBUG,
     format="%(asctime)s  %(levelname)s  %(message)s",
 )
