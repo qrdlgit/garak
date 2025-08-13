@@ -482,8 +482,7 @@ class Model(Pipeline, HFCompatible):
      
      
         self.model = transformers.AutoModelForCausalLM.from_pretrained(
-            self.name, config=self.config,    torch_dtype="auto",
-    device_map="auto"
+            self.name, config=self.config,    torch_dtype="auto", device_map="auto"
         ).to(self.device)
 
         if not hasattr(self, "deprefix_prompt"):
@@ -537,11 +536,11 @@ class Model(Pipeline, HFCompatible):
             warnings.simplefilter("ignore", category=UserWarning)
             with torch.no_grad():
                 if self.use_chat:
-                     messages = [
-                         {"role": "user", "content": prompt},
-                     ]
-                     logging.debug(f"Doing messages: {messages}")
-                     inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(model.device)
+                    messages = [
+                        {"role": "user", "content": prompt},
+                    ]
+                    logging.debug(f"Doing messages: {messages}")
+                    inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(model.device)
                   
                     formatted_prompt = self.tokenizer.apply_chat_template(
                         messages,
