@@ -23,4 +23,6 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s  %(levelname)s  %(message)s",
 )
+print("Echo out debug statement")
 logging.debug("Test debug statement")
+print("Done Echo out debug statement")
