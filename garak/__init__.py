@@ -18,6 +18,8 @@ if _log_filename is None:
 
 _config.transient.log_filename = _log_filename
 print("logging to ", _log_filename)
+print("prev handlers", logging.getLogger('').handlers, 'done')
+logging.getLogger('').handlers = []  # Clear existing handlers
 logging.basicConfig(
     stream=sys.stdout,
     level=logging.DEBUG,
