@@ -470,7 +470,7 @@ class Model(Pipeline, HFCompatible):
 
         self._set_hf_context_len(self.config)
         self.config.init_device = self.device  # determined by Pipeline `__init__``
-        print(f"running automodel with config {self.name} {self.config}")
+        print("running automodel with config", self.name, self.config)
         self.model = transformers.AutoModelForCausalLM.from_pretrained(
             self.name, config=self.config
         ).to(self.device)
