@@ -17,7 +17,7 @@ if _log_filename is None:
     os.environ[GARAK_LOG_FILE_VAR] = str(_log_filename)
 
 _config.transient.log_filename = _log_filename
-
+print("logging to ", _log_filename)
 logging.basicConfig(
     filename=_log_filename,
     level=logging.DEBUG,
