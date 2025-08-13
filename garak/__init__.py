@@ -5,7 +5,7 @@ __app__ = "garak"
 __description__ = "LLM vulnerability scanner"
 
 import logging
-import os
+import os,sys
 from garak import _config
 
 GARAK_LOG_FILE_VAR = "GARAK_LOG_FILE"
