@@ -478,7 +478,7 @@ class Model(Pipeline, HFCompatible):
         self.config.init_device = self.device  # determined by Pipeline `__init__``
 
         config_str = json.dumps(self.config.to_dict(), cls=DeviceEncoder, indent=2, sort_keys=True)
-        logging.debug(f"running automodel with config {self.name} {config_str}")
+        logging.debug(f"running automodel with config {self.name}")
      
      
         self.model = transformers.AutoModelForCausalLM.from_pretrained(
@@ -558,9 +558,11 @@ class Model(Pipeline, HFCompatible):
                 )
 
                 try:
+                    logging.debug(f"self.model.generate: {len(inputs)}")
                     outputs = self.model.generate(
-                        **inputs, generation_config=self.generation_config,max_new_tokens=1024,
+                        **inputs, generation_config=self.generation_config,max_new_tokens=256,
                     )
+                    logging.debug(f"done self.model.generate: {len(inputs)}")
                 except Exception as e:
                     if len(prompt) == 0:
                         returnval = [None] * generations_this_call
