@@ -560,7 +560,7 @@ class Model(Pipeline, HFCompatible):
                 try:
                     logging.debug(f"self.model.generate: {len(inputs)}")
                     outputs = self.model.generate(
-                        **inputs, generation_config=self.generation_config,max_new_tokens=256,
+                        **inputs,max_new_tokens=256,  # generation_config=self.generation_config
                     )
                     logging.debug(f"done self.model.generate: {len(inputs)}")
                 except Exception as e:
