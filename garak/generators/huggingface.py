@@ -13,7 +13,7 @@ be quite strong. Find your Hugging Face Inference API Key here:
 
  https://huggingface.co/docs/api-inference/quicktour
 """
-
+print("loaded huggingface generator")
 import logging
 import re
 from typing import List, Union
@@ -470,7 +470,7 @@ class Model(Pipeline, HFCompatible):
 
         self._set_hf_context_len(self.config)
         self.config.init_device = self.device  # determined by Pipeline `__init__``
-        print("running automodel with config", self.name, self.config, self.device)
+        logging.debug(f"running automodel with config {self.name} {self.config} {self.device}")
         self.model = transformers.AutoModelForCausalLM.from_pretrained(
             self.name, config=self.config
         ).to(self.device)
