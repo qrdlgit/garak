@@ -482,7 +482,8 @@ class Model(Pipeline, HFCompatible):
      
      
         self.model = transformers.AutoModelForCausalLM.from_pretrained(
-            self.name, config=self.config
+            self.name, config=self.config,    torch_dtype="auto",
+    device_map="auto"
         ).to(self.device)
 
         if not hasattr(self, "deprefix_prompt"):
