@@ -537,8 +537,14 @@ class Model(Pipeline, HFCompatible):
             warnings.simplefilter("ignore", category=UserWarning)
             with torch.no_grad():
                 if self.use_chat:
+                     messages = [
+                         {"role": "user", "content": prompt},
+                     ]
+                     logging.debug(f"Doing messages: {messages}")
+                     inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(model.device)
+                  
                     formatted_prompt = self.tokenizer.apply_chat_template(
-                        self._format_chat_prompt(prompt),
+                        messages,
                         tokenize=False,
                         add_generation_prompt=True,
                     )
@@ -555,7 +561,7 @@ class Model(Pipeline, HFCompatible):
 
                 try:
                     outputs = self.model.generate(
-                        **inputs, generation_config=self.generation_config
+                        **inputs, generation_config=self.generation_config,max_new_tokens=1024,
                     )
                 except Exception as e:
                     if len(prompt) == 0:
