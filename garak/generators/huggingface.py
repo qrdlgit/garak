@@ -520,6 +520,8 @@ class Model(Pipeline, HFCompatible):
         self, prompt: str, generations_this_call: int = 1
     ) -> List[Union[str, None]]:
         self._load_client()
+        logging.debug(f"Setting max tokens to 1024, sorry was {self.max_tokens} top_k:{self.top_k} temp:{self.temperature}")
+        self.max_tokens = 1024
         self.generation_config.max_new_tokens = self.max_tokens
         self.generation_config.do_sample = self.hf_args["do_sample"]
         self.generation_config.num_return_sequences = generations_this_call
@@ -529,6 +531,7 @@ class Model(Pipeline, HFCompatible):
             self.generation_config.top_k = self.top_k
 
         raw_text_output = []
+        logging.debug(f"prompt: {self.use_chat} {prompt}")
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=UserWarning)
             with torch.no_grad():
@@ -572,7 +575,7 @@ class Model(Pipeline, HFCompatible):
             ]
         else:
             text_output = raw_text_output
-
+        logging.debug(f"{self.deprefix_prompt} text_output {text_output} ")
         if not self.deprefix_prompt:
             return text_output
         else:
