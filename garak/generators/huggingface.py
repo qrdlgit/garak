@@ -445,8 +445,14 @@ class InferenceEndpoint(InferenceAPI):
                 "Hugging Face 🤗 endpoint didn't generate a response. Make sure the endpoint is active."
             ) from exc
         return [output]
+import json
 
-
+class DeviceEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, torch.device):
+            return str(obj)  # Convert torch.device to string
+        return super().default(obj)
+     
 class Model(Pipeline, HFCompatible):
     """Get text generations from a locally-run Hugging Face model"""
 
@@ -471,8 +477,8 @@ class Model(Pipeline, HFCompatible):
         self._set_hf_context_len(self.config)
         self.config.init_device = self.device  # determined by Pipeline `__init__``
 
-     
-        with open('/kaggle/working/file.txt', 'a') as f: f.write(f"running automodel with config {self.name} {self.config}")
+        config_str = json.dumps(self.config.to_dict(), cls=DeviceEncoder, indent=2, sort_keys=True)
+        logging.debug(f"running automodel with config {self.name} {config_str}")
      
      
         self.model = transformers.AutoModelForCausalLM.from_pretrained(
